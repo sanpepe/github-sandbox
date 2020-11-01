@@ -3,7 +3,7 @@ name: Shell Commands
 on: [push]
 
 jobs:
-  run-shell-command:
+  run-shell-commands:
     runs-on: ubuntu-latest
     steps:
       - name: echo a string
@@ -12,3 +12,22 @@ jobs:
         run: |
           node -v
           npm -v
+      - name: python cmd
+        shell: python
+        run: |
+            import platform
+            print(platform.processor())
+  run-windows-commands:
+    runs-on: windows-latest
+    needs: [run-shell-commands]
+    steps:
+      - name: print dir PS
+        run: Get-Location
+      - name: print dir BASH
+        run: pwd
+        shell: bash
+      - name: python cmd
+        shell: python
+        run: |
+            import platform
+            print(platform.processor())
