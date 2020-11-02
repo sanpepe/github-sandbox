@@ -32,8 +32,13 @@ jobs:
         run: echo "$MATRIX_CONTEXT"
   functions:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     steps:
+      - name: bad echo cmd
+        run: |
+          eccho "Bad echo command"
       - name: functions examples
+        if: failure()
         run: |
           echo ${{ contains( 'hello', '11' ) }}
           echo ${{ startsWith( 'hello', 'he' ) }}
