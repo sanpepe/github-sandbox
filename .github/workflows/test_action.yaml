@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout
+        uses: actions/checkout@v1
       - name: Use my Action
         id: hello
         uses: ./.github/actions/hello
