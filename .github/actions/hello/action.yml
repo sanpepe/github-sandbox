@@ -1,0 +1,14 @@
+name: Hello World Pepe Action
+author: Pepe Sandoval
+description: Some description about action here
+inputs:
+  who-to-say-hello:
+    description: 'Who to Say Hello'
+    required: true
+    default: Pepe
+outputs:
+  time:
+    description: 'Time of Hello'
+runs:
+  using: "node12"
+  main: 'dist/index.js'

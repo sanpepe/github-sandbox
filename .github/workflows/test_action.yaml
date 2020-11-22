@@ -1,0 +1,17 @@
+name: Test Actions
+
+on: [push]
+
+jobs:
+  run-my-github-actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout
+      - name: Use my Action
+        id: hello
+        uses: ./.github/actions/hello@v1
+        with:
+          who-to-say-hello: "Pepe Ch."
+      - name: Log Greeting output
+        run: echo "Pepe Action Time ${{ steps.hello.outputs.time }}"
