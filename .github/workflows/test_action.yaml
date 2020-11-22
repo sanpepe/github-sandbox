@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout
       - name: Use my Action
         id: hello
-        uses: ./.github/actions/hello@v1
+        uses: ./.github/actions/hello
         with:
           who-to-say-hello: "Pepe Ch."
       - name: Log Greeting output
