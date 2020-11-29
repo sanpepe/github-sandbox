@@ -1,6 +1,6 @@
 name: Test Actions
 
-on: [pull_request]
+on: [push]
 
 jobs:
   run-my-github-actions:
@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v1
       - name: Use my Action
         id: hello
-        uses: ./.github/actions/hello
+        uses: ./.github/actions/hello-docker
         with:
           who-to-say-hello: "Pepe Ch."
       - name: Log Greeting output

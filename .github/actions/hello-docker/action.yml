@@ -1,0 +1,16 @@
+name: Hello World Pepe Docker Action
+author: Pepe Sandoval
+description: Some description about action here
+inputs:
+  who-to-say-hello:
+    description: 'Who to Say Hello'
+    required: true
+    default: Pepe
+outputs:
+  time:
+    description: 'Time of Hello'
+runs:
+  using: "docker"
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.who-to-say-hello }}
