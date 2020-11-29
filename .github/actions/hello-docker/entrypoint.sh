@@ -1,5 +1,6 @@
 #!/bin/sh -l
 # entrypoint.sh
+# Comment
 echo "::debug ::Debug Message"
 echo "Hello $1"
 time=$(date)
