@@ -1,6 +1,7 @@
 name: Test Actions Docker
 
-on: [push]
+on: [pull_request]
+# on: [push]
 
 jobs:
   run-my-github-actions:
