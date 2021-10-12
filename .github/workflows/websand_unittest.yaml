@@ -5,7 +5,7 @@ on:
     branches:
       - master
 jobs:
-  run-pyox-unit-test:
+  run-websand-unit-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
