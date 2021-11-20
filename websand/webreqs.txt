@@ -1,0 +1,7 @@
+ - blog page allows admin to create, edit, delete any blogs
+ - blog page allows writers to create edit, delete only blog he created
+ - has like dislike feaatu with captcha
+ - login only for writters and admin
+ - pull movie rating from third party services
+ - option to select country tied to language (US=ENG, UK=ENG, MX=ES, ESP=ES, etc)
+ - shows where to watch depending of chosen country site

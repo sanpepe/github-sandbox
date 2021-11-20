@@ -1,11 +1,16 @@
+# PYTHONPATH=../ && python3 -m unittest websand/tests/User_unittest.py
+
 import unittest
 
-class WebSandUniTest(unittest.TestCase):
+from websand.src.User import User
+
+class WebSandUnitTest(unittest.TestCase):
     def __init__(self, *args, **kwargs):
-        super(WebSandUniTest, self).__init__(*args, **kwargs)
+        super(WebSandUnitTest, self).__init__(*args, **kwargs)
 
     def setUp(self):
-        print("WebSandUniTest setUp")
 
-    def test_assert_websand(self):
-        print("WebSandUniTest test")
+        pass
+
+    def test_nothingReallyWorks(self):
+        print("test_nothingReallyWorks")

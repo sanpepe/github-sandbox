@@ -1,0 +1,2 @@
+https://github.com/cleancoders/CleanCodeCaseStudy
+https://github.com/cleancoders/CleanCodeCaseStudy/commits/master?after=d79f951dce1d613371619db543429bab61eb6f85+34&branch=master
