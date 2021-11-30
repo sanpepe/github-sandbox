@@ -8,9 +8,10 @@ class MockGateway(Gateway):
         self.users = []
         self.licenses = []
 
-    def establishId(self, user):
-        if user.getID() is None:
-            user.setID(str(uuid.uuid4()))
+    def establishId(self, entity):
+        if entity.getID() is None:
+            entity.setID(str(uuid.uuid4()))
+        return entity
 
     def findAllCodecasts(self):
         return self.codecasts
@@ -19,11 +20,12 @@ class MockGateway(Gateway):
         self.codecasts.remove(codecast)
 
     def saveCodecast(self, codecast):
-        self.codecasts.append(codecast)
+        self.codecasts.append(self.establishId(entity=codecast))
+        return codecast
 
     def saveUser(self, user):
-        self.establishId(user=user)
-        self.users.append(user)
+        self.users.append(self.establishId(entity=user))
+        return user
 
     def saveLicense(self, license):
         self.licenses.append(license)

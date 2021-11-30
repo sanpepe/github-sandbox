@@ -16,9 +16,8 @@ class PresentCodecastUseCaseUnitTest(unittest.TestCase):
 
     def setUp(self):
         Context.gateway = MockGateway()
-        self.user = User("User")
-        Context.gateway.saveUser(user=self.user)
-        self.codecast = Codecast()
+        self.user = Context.gateway.saveUser(user=User("User"))
+        self.codecast = Context.gateway.saveCodecast(codecast=Codecast())
         self.usecase = PresentCodecastUseCase()
 
     def test_userWithoutViewLicense_cannotViewCodecast(self):
@@ -32,8 +31,7 @@ class PresentCodecastUseCaseUnitTest(unittest.TestCase):
         self.assertTrue(ret)
 
     def test_userWithoutViewLicense_cannotViewOtherUsersCodecast(self):
-        otherUser = User("OtherUser")
-        Context.gateway.saveUser(user=otherUser)
+        otherUser = Context.gateway.saveUser(user=User("OtherUser"))
         viewLicense = License(user=self.user, codecast=self.codecast)
         Context.gateway.saveLicense(license=viewLicense)
         ret = self.usecase.isLicensedToViewCodecast(user=otherUser, codecast=self.codecast)
