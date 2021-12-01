@@ -16,7 +16,7 @@ class MockGateway(Gateway):
     def findAllCodecasts(self):
         return self.codecasts
 
-    def delete(self, codecast):
+    def deleteCodecast(self, codecast):
         self.codecasts.remove(codecast)
 
     def saveCodecast(self, codecast):

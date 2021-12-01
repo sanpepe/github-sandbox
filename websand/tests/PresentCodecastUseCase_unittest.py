@@ -36,3 +36,29 @@ class PresentCodecastUseCaseUnitTest(unittest.TestCase):
         Context.gateway.saveLicense(license=viewLicense)
         ret = self.usecase.isLicensedToViewCodecast(user=otherUser, codecast=self.codecast)
         self.assertFalse(ret)
+
+    def test_presentNoCodecasts(self):
+        Context.gateway.deleteCodecast(self.codecast)
+        presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
+        self.assertEqual(0, len(presentableCodecasts))
+
+    def test_presentOneCodecasts(self):
+        self.codecast.setTitle("Some Title")
+        self.codecast.setPublicationDate("Tomorrow")
+        presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
+        self.assertEqual(1, len(presentableCodecasts))
+        presentableCodecast = presentableCodecasts[0]
+        self.assertEqual("Some Title", presentableCodecast.title)
+        self.assertEqual("Tomorrow", presentableCodecast.publicationDate)
+
+    def test_presentdCodecastIsNotViewableIfNoLicense(self):
+        presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
+        presentableCodecast = presentableCodecasts[0]
+        self.assertFalse(presentableCodecast.isViewable)
+
+
+    def test_presentdCodecastIsViewableIfLicenseExists(self):
+        Context.gateway.saveLicense(license=License(user=self.user, codecast=self.codecast))
+        presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
+        presentableCodecast = presentableCodecasts[0]
+        self.assertTrue(presentableCodecast.isViewable)

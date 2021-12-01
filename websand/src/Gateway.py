@@ -10,7 +10,7 @@ class Gateway:
     def findAllCodecasts(self):
         pass
 
-    def delete(self, codecast):
+    def deleteCodecast(self, codecast):
         pass
 
     def saveCodecast(self, codecast):
