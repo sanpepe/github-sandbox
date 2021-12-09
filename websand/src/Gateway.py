@@ -7,6 +7,9 @@ class Gateway:
     def establishId(self, user):
         pass
 
+    def findAllCodecastsSortedChronologically(self):
+        pass
+
     def findAllCodecasts(self):
         pass
 

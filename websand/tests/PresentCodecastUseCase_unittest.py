@@ -1,11 +1,14 @@
 # PYTHONPATH=../ && python3 -m unittest websand/tests/PresentCodecastUseCase_unittest.py
 import unittest
+import datetime
+
 from websand.src.PresentCodecastUseCase import PresentCodecastUseCase
 from websand.src.User import User
 from websand.src.Codecast import Codecast
 from websand.src.License import License
 from websand.src.Context import Context
 from websand.src.MockGateway import MockGateway
+
 
 class PresentCodecastUseCaseUnitTest(unittest.TestCase):
     def __init__(self, *args, **kwargs):
@@ -25,14 +28,14 @@ class PresentCodecastUseCaseUnitTest(unittest.TestCase):
         self.assertFalse(ret)
 
     def test_userWithViewLicense_canViewCodecast(self):
-        viewLicense = License(user=self.user, codecast=self.codecast)
+        viewLicense = License(lintype=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
         Context.gateway.saveLicense(license=viewLicense)
         ret = self.usecase.isLicensedToViewCodecast(user=self.user, codecast=self.codecast)
         self.assertTrue(ret)
 
     def test_userWithoutViewLicense_cannotViewOtherUsersCodecast(self):
         otherUser = Context.gateway.saveUser(user=User("OtherUser"))
-        viewLicense = License(user=self.user, codecast=self.codecast)
+        viewLicense = License(lintype=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
         Context.gateway.saveLicense(license=viewLicense)
         ret = self.usecase.isLicensedToViewCodecast(user=otherUser, codecast=self.codecast)
         self.assertFalse(ret)
@@ -44,21 +47,31 @@ class PresentCodecastUseCaseUnitTest(unittest.TestCase):
 
     def test_presentOneCodecasts(self):
         self.codecast.setTitle("Some Title")
-        self.codecast.setPublicationDate("Tomorrow")
+        now_str = '05/19/2014'
+        now = datetime.datetime.strptime(now_str, '%m/%d/%Y')
+        self.codecast.setPublicationDate(now)
         presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
         self.assertEqual(1, len(presentableCodecasts))
         presentableCodecast = presentableCodecasts[0]
         self.assertEqual("Some Title", presentableCodecast.title)
-        self.assertEqual("Tomorrow", presentableCodecast.publicationDate)
+        self.assertEqual(now_str, presentableCodecast.publicationDate)
 
     def test_presentdCodecastIsNotViewableIfNoLicense(self):
         presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
         presentableCodecast = presentableCodecasts[0]
         self.assertFalse(presentableCodecast.isViewable)
 
-
-    def test_presentdCodecastIsViewableIfLicenseExists(self):
-        Context.gateway.saveLicense(license=License(user=self.user, codecast=self.codecast))
+    def test_presentedCodecastIsViewableIfLicenseExists(self):
+        viewableLicense = License(lintype=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
+        Context.gateway.saveLicense(license=viewableLicense)
         presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
         presentableCodecast = presentableCodecasts[0]
         self.assertTrue(presentableCodecast.isViewable)
+
+    def test_presentedCodecastIsDownloadableIfDownloadLicenseExists(self):
+        downloadLicense = License(lintype=License.LicenseType.DOWNLOADING, user=self.user, codecast=self.codecast)
+        Context.gateway.saveLicense(license=downloadLicense)
+        presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
+        presentableCodecast = presentableCodecasts[0]
+        self.assertTrue(presentableCodecast.isDownloadable)
+        self.assertFalse(presentableCodecast.isViewable)

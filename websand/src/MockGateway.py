@@ -14,7 +14,11 @@ class MockGateway(Gateway):
         return entity
 
     def findAllCodecasts(self):
-        return self.codecasts
+        return self.findAllCodecastsSortedChronologically()
+
+    def findAllCodecastsSortedChronologically(self):
+        sorted_codecasts = sorted(self.codecasts, key=lambda c: c.publicationDate)
+        return sorted_codecasts
 
     def deleteCodecast(self, codecast):
         self.codecasts.remove(codecast)
