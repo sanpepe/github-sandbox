@@ -11,7 +11,7 @@ class PresentCodecastUseCase:
 
     def presentCodecasts(self, loggedInUser):
         presentableCodecasts = []
-        allCodecasts = Context.gateway.findAllCodecasts()
+        allCodecasts = Context.codecastGateway.findAllCodecastsSortedChronologically()
 
         for codecast in allCodecasts:
             presentableCodecasts.append(self.formatCodecast(loggedInUser, codecast))
@@ -33,7 +33,7 @@ class PresentCodecastUseCase:
         return self.isLicensedFor(License.LicenseType.DOWNLOADING, user, codecast)
 
     def isLicensedFor(self, licenseType, user, codecast):
-        licenses = Context.gateway.findLicensesForUserAndCodecast(user=user, codecast=codecast)
+        licenses = Context.licenseGateway.findLicensesForUserAndCodecast(user=user, codecast=codecast)
         for l in licenses:
             if l.getType() == licenseType:
                 return True
