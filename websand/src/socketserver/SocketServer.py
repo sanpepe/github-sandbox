@@ -1,7 +1,7 @@
 import socket
 import threading
 
-class Pepe_Thread (threading.Thread):
+class GenericThread (threading.Thread):
     def __init__(self, func, params=None, name_id=""):
         threading.Thread.__init__(self)
         self.name = name_id
@@ -25,10 +25,10 @@ class Pepe_Thread (threading.Thread):
             else:
                 self.returns = self.func()
         self.running = False
-        #print("Pepe_Thread Exiting {} - {} with params {}".format(self.name, self.func.__name__, str(self.param)))
+        #print("GenericThread Exiting {} - {} with params {}".format(self.name, self.func.__name__, str(self.param)))
 
     def get_returns(self):
-        #print("Pepe_Thread Returning {} ".format(str(self.returns)))
+        #print("GenericThread Returning {} ".format(str(self.returns)))
         return self.returns
 
 
@@ -40,7 +40,7 @@ class SocketServer:
         self.service = service
         self.running = False
 
-        self.runThread = Pepe_Thread(self.runnable)
+        self.mainThread = GenericThread(self.runnable)
         self.serviceSocket = None
         self.serverSocket = socket.socket()
         self.serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -57,24 +57,33 @@ class SocketServer:
     def getService(self):
         return self.service
 
+    def setService(self, s):
+        self.service = s
+
     def isRunning(self):
         return self.running
 
     def runnable(self):
-        try:
-            self.serviceSocket, addr = self.serverSocket.accept()
-            self.service.serve(self.serviceSocket)
-        except socket.timeout:
-            pass
-
+        while self.running:
+            try:
+                self.serviceSocket, addr = self.serverSocket.accept()
+                self.service.serve(self.serviceSocket)
+            except socket.timeout:
+                break
+            except socket.error as e:
+                err = e.args[0]
+                if err == errno.EWOULDBLOCK:
+                    #print("no data")
+                    continue
 
     def start(self):
-        self.runThread.start()
         self.running = True
+        self.mainThread.start()
 
     def stop(self):
-        self.runThread.join()
+        if self.running:
+            self.running = False
+            self.mainThread.join()
         self.serverSocket.shutdown(socket.SHUT_RDWR)
         self.serverSocket.close()
         #print("server stop", self.serverSocket)
-        self.running = False
