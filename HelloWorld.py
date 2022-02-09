@@ -11,14 +11,34 @@ class HelloWorldService(SocketService):
     def __init__(self):
         super(HelloWorldService, self).__init__()
         self.counter = 0
-        self.response = 'HTTP/1.0 200 OK\n\nHello World'
+        self.response = """HTTP/1.1 200 OK
+
+<!DOCTYPE HTML>
+<!-- HTML Element -->
+<html lang="en-US">
+
+    <!-- HEAD Element -->
+    <head>
+        <title>Test</title>
+    </head>
+
+    <!-- BODY Element -->
+    <body>
+        <h1>Hello World {}</h1>
+    </body>
+
+</html>
+"""
 
     def doService(self, s):
         #fcntl.fcntl(s, fcntl.F_SETFL, os.O_NONBLOCK)
         try:
             self.counter += 1
-            msg = "{}\n<p>{}</p>".format(self.response, self.counter)
-            print("echo msg:", msg)
+            request = s.recv(1024).decode()
+            print("request msg:\n", request)
+
+            msg = self.response.format(self.counter)
+            print("response msg:\n", msg)
             s.sendall(msg.encode())
         except socket.error as e:
             err = e.args[0]
@@ -26,7 +46,7 @@ class HelloWorldService(SocketService):
                 print("no data")
                 pass
         else:
-            print("Done", self.counter )
+            print("Done", self.counter)
             pass
 
     def serve(self, s):

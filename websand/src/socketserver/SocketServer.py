@@ -46,7 +46,7 @@ class SocketServer:
         self.serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.setTimeout(SocketServer.TIMEOUT)
         self.serverSocket.bind(('', self.port))
-        self.serverSocket.listen()
+        self.serverSocket.listen(1)
 
     def setTimeout(self, timeout):
         self.TIMEOUT = timeout
