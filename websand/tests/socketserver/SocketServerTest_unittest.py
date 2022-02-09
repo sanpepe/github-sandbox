@@ -52,9 +52,22 @@ class ReadingSocketService(TestSocketService):
 class EchoSocketService(TestSocketService):
     def __init__(self):
         super(EchoSocketService, self).__init__()
+        self.message = None
 
     def doService(self, s):
-        pass
+        fcntl.fcntl(s, fcntl.F_SETFL, os.O_NONBLOCK)
+        try:
+            self.message = s.recv(4096).decode()
+            s.send(self.message.encode())
+            #print("echo msg:", self.message)
+        except socket.error as e:
+            err = e.args[0]
+            if err == errno.EAGAIN or err == errno.EWOULDBLOCK:
+                #print("no data")
+                pass
+        else:
+            #print(self.message)
+            pass
 
 
 class SocketServerUnitTest(unittest.TestCase):
@@ -137,7 +150,18 @@ class SocketServerEchoServiceUnitTest(SocketServerUnitTest):
         super(SocketServerEchoServiceUnitTest, self).__init__(*args, **kwargs)
 
     def setUp(self):
-        pass
+        SocketServerUnitTest.setUp(self)
+        self.service = EchoSocketService()
+        self.server = SocketServer(self.port, self.service)
 
-    def test_canSendAndReceiveData(self):
-        pass
+    def test_canEchoData(self):
+        msg = "echo"
+        self.server.start()
+        self.service.wait()
+        ss = socket.socket() ; ss.connect(('localhost', self.port))
+        ss.send(msg.encode())
+
+        response = ss.recv(4096).decode()
+        self.server.stop()
+        self.assertEqual(msg, response)
+        ss.close()

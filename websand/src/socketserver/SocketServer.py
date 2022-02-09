@@ -33,7 +33,7 @@ class GenericThread (threading.Thread):
 
 
 class SocketServer:
-    TIMEOUT = 3
+    TIMEOUT = 10
 
     def __init__(self, port, service):
         self.port = port
@@ -42,13 +42,14 @@ class SocketServer:
 
         self.mainThread = GenericThread(self.runnable)
         self.serviceSocket = None
-        self.serverSocket = socket.socket()
+        self.serverSocket = socket.socket() # socket.AF_INET, socket.SOCK_STREAM
         self.serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.setTimeout(SocketServer.TIMEOUT)
         self.serverSocket.bind(('', self.port))
         self.serverSocket.listen()
 
     def setTimeout(self, timeout):
+        self.TIMEOUT = timeout
         self.serverSocket.settimeout(timeout)
 
     def getPort(self):
@@ -69,6 +70,7 @@ class SocketServer:
                 self.serviceSocket, addr = self.serverSocket.accept()
                 self.service.serve(self.serviceSocket)
             except socket.timeout:
+                #print("Timeout after {}s".format(SocketServer.TIMEOUT))
                 break
             except socket.error as e:
                 err = e.args[0]
