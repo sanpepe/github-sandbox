@@ -5,16 +5,32 @@ import os
 from websand.src.view.ViewTemplate import ViewTemplate
 from websand.src.socketserver.SocketServer import SocketServer
 from websand.src.socketserver.SocketService import SocketService
+from websand.src.PresentCodecastUseCase import PresentCodecastUseCase
+from websand.src.Context import Context
+
 from websand.tests.TestSetup import TestSetup
 
-
 def getFrontPage():
-    codecastView = ViewTemplate.create("codecast.html")
+    usecase = PresentCodecastUseCase()
+    presentableCodecasts = usecase.presentCodecasts(Context.userGateway.findUserByName("Bob"))
+
+    codecastlines = ""
+    for pc in presentableCodecasts:
+        codecastTemplate = ViewTemplate.create("codecast.html")
+        codecastTemplate.replace("title", pc.title)
+        codecastTemplate.replace("publicationDate", pc.publicationDate)
+
+        # Staged
+        codecastTemplate.replace("thumbnail", "https://via.placeholder.com/400x200.png?text=Codecast")
+        codecastTemplate.replace("author", "Uncle Bob")
+        codecastTemplate.replace("duration", "58 min.")
+        codecastTemplate.replace("contentActions", "Buying Options go here.")
+
+        codecastlines += codecastTemplate.getContent() + "<br>"
+
+
     frontPageView = ViewTemplate.create("frontpage.html")
-
-    codecastView.replace("title", "Title Ep1 Pepe")
-
-    frontPageView.replace("codecasts", codecastView.getContent())
+    frontPageView.replace("codecasts", codecastlines)
 
     return frontPageView.getContent()
 
@@ -53,7 +69,7 @@ class MainService(SocketService):
 
 class Main():
     def __init__(self, *args, **kwargs):
-        TestSetup.setupContext()
+        TestSetup.setupSampleData()
 
     def getServer(self):
         return self.server

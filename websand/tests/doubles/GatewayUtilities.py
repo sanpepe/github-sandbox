@@ -6,6 +6,7 @@ from websand.src.Entity import Entity
 class GatewayUtilities(Entity):
     def __init__(self):
         self.entities = dict()
+        #print("GatewayUtilities __init__ {}".format(self.__class__))
 
     def getEntities(self):
         clonedEntities = list(self.entities.values())
