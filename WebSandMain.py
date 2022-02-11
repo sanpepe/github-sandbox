@@ -1,32 +1,25 @@
 import socket
 import errno
+import os
 
+from websand.src.view.ViewTemplate import ViewTemplate
 from websand.src.socketserver.SocketServer import SocketServer
 from websand.src.socketserver.SocketService import SocketService
 from websand.tests.TestSetup import TestSetup
 
 
 def getFrontPage():
-    return "<h1>Gunk</h1>"
+    codecastView = ViewTemplate.create("codecast.html")
+    frontPageView = ViewTemplate.create("frontpage.html")
+
+    codecastView.replace("title", "Title Ep1 Pepe")
+
+    frontPageView.replace("codecasts", codecastView.getContent())
+
+    return frontPageView.getContent()
 
 def makeResponse(content):
-    main_content = f"""<!DOCTYPE HTML>
-<!-- HTML Element -->
-<html lang="en-US">
-
-    <!-- HEAD Element -->
-    <head>
-        <title>Test</title>
-    </head>
-
-    <!-- BODY Element -->
-    <body>
-        {content}
-    </body>
-
-</html>
-"""
-    response = "HTTP/1.1 200 OK\nContent-Length: {}\n\n".format(len(main_content)) + main_content
+    response = "HTTP/1.1 200 OK\nContent-Length: {}\n\n".format(len(content)) + content
     return response
 
 
@@ -37,7 +30,7 @@ class MainService(SocketService):
     def doService(self, s):
         #fcntl.fcntl(s, fcntl.F_SETFL, os.O_NONBLOCK)
         try:
-            request = s.recv(1024).decode()
+            request = s.recv(2**10).decode()
             print("request msg:\n" + request)
             frontPage = getFrontPage()
             response = makeResponse(frontPage)
@@ -77,3 +70,4 @@ if __name__ == "__main__":
     SocketServer.TIMEOUT = None
     main_obj = Main()
     main_obj.run()
+    #getFrontPage()
