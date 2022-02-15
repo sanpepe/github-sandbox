@@ -11,3 +11,8 @@ class InMemoryCodecastGateway(GatewayUtilities, CodecastGateway):
         for codecast in self.getEntities():
             if codecast.getTitle() == codecastTitle:
                 return codecast
+
+    def findCodecastByPermalink(self, permalink):
+        for codecast in self.getEntities():
+            if codecast.getPermalink() == permalink:
+                return codecast

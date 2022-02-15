@@ -1,3 +1,5 @@
+# PYTHONPATH=../ && python3 WebSandMain.py
+
 import socket
 import errno
 import os
@@ -50,7 +52,7 @@ class MainService(SocketService):
             print("request msg:\n" + request)
             frontPage = getFrontPage()
             response = makeResponse(frontPage)
-            print("response msg:\n" + response)
+            #print("response msg:\n" + response)
             s.sendall(response.encode())
         except socket.error as e:
             err = e.args[0]

@@ -9,3 +9,5 @@ class CodecastGateway:
         pass
     def findCodecastByTitle(self, codecastTitle):
         pass
+    def findCodecastByPermalink(self, permalink):
+        pass
