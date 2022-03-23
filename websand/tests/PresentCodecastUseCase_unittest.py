@@ -1,8 +1,8 @@
-# PYTHONPATH=../ && python3 -m unittest websand/tests/PresentCodecastUseCase_unittest.py
+# PYTHONPATH=../ && python3 -m unittest websand/tests/CodecastSummaryUseCase_unittest.py
 import unittest
 import datetime
 
-from websand.src.PresentCodecastUseCase import PresentCodecastUseCase
+from websand.src.CodecastSummaryUseCase import CodecastSummaryUseCase
 from websand.src.User import User
 from websand.src.Codecast import Codecast
 from websand.src.License import License
@@ -10,9 +10,9 @@ from websand.src.Context import Context
 
 from websand.tests.TestSetup import TestSetup
 
-class PresentCodecastUseCaseUnitTest(unittest.TestCase):
+class CodecastSummaryUseCaseUnitTest(unittest.TestCase):
     def __init__(self, *args, **kwargs):
-        super(PresentCodecastUseCaseUnitTest, self).__init__(*args, **kwargs)
+        super(CodecastSummaryUseCaseUnitTest, self).__init__(*args, **kwargs)
         self.user = None
         self.codecast = None
         self.usecase = None
@@ -21,23 +21,23 @@ class PresentCodecastUseCaseUnitTest(unittest.TestCase):
         TestSetup.setupContext()
         self.user = Context.userGateway.save(User("User"))
         self.codecast = Context.codecastGateway.save(Codecast())
-        self.usecase = PresentCodecastUseCase()
+        self.usecase = CodecastSummaryUseCase()
 
     def test_userWithoutViewLicense_cannotViewCodecast(self):
-        ret = self.usecase.isLicensedToViewCodecast(user=self.user, codecast=self.codecast)
+        ret = self.usecase.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
         self.assertFalse(ret)
 
     def test_userWithViewLicense_canViewCodecast(self):
         viewLicense = License(lintype=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
         Context.licenseGateway.save(viewLicense)
-        ret = self.usecase.isLicensedToViewCodecast(user=self.user, codecast=self.codecast)
+        ret = self.usecase.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
         self.assertTrue(ret)
 
     def test_userWithoutViewLicense_cannotViewOtherUsersCodecast(self):
         otherUser = Context.userGateway.save(User("OtherUser"))
         viewLicense = License(lintype=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
         Context.licenseGateway.save(viewLicense)
-        ret = self.usecase.isLicensedToViewCodecast(user=otherUser, codecast=self.codecast)
+        ret = self.usecase.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=otherUser, codecast=self.codecast)
         self.assertFalse(ret)
 
     def test_presentNoCodecasts(self):

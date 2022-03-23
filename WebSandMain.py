@@ -7,13 +7,13 @@ import os
 from websand.src.view.ViewTemplate import ViewTemplate
 from websand.src.socketserver.SocketServer import SocketServer
 from websand.src.socketserver.SocketService import SocketService
-from websand.src.PresentCodecastUseCase import PresentCodecastUseCase
+from websand.src.CodecastSummaryUseCase import CodecastSummaryUseCase
 from websand.src.Context import Context
 
 from websand.tests.TestSetup import TestSetup
 
 def getFrontPage():
-    usecase = PresentCodecastUseCase()
+    usecase = CodecastSummaryUseCase()
     presentableCodecasts = usecase.presentCodecasts(Context.userGateway.findUserByName("Bob"))
 
     codecastlines = ""

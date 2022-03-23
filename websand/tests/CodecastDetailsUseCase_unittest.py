@@ -21,20 +21,24 @@ class CodecastDetailsUseCaseUnitTest(unittest.TestCase):
         TestSetup.setupContext()
 
         self.user = Context.userGateway.save(User("User"))
-
-
         self.usecase = CodecastDetailsUseCase()
 
     def test_createCodecastDetailsUseCase(self):
+        now_str = '01/02/2015'
+
         codecast = Codecast()
         codecast.setTitle("Codecast")
         codecast.setPermalink("permalink-a")
-
-        now_str = '01/02/2015'
-        now = datetime.datetime.strptime(now_str, '%m/%d/%Y')
-        codecast.setPublicationDate(now)
+        codecast.setPublicationDate(datetime.datetime.strptime(now_str, '%m/%d/%Y'))
         codecast = Context.codecastGateway.save(codecast)
 
         details = self.usecase.requestCodecastDetails(loggedInUser=self.user, permalink="permalink-a")
+
         self.assertEqual("Codecast", details.title)
         self.assertEqual(now_str, details.publicationDate)
+
+    def test_doesntCrashOnMissingCodecast(self):
+
+        details = self.usecase.requestCodecastDetails(loggedInUser=self.user, permalink="missing")
+
+        self.assertFalse(details.wasFound)

@@ -1,7 +1,7 @@
-# Presemtation objects alwasy hold strings
-class PresentableCodecastDetails:
-    def __init__(self):
-        self.title = None
-        self.publicationDate = None
-        self.permalink = None
+from websand.src.PresentableCodecastSummary import PresentableCodecastSummary
 
+# Presentation objects alwasy hold strings
+class PresentableCodecastDetails(PresentableCodecastSummary):
+    def __init__(self):
+        super(PresentableCodecastDetails, self).__init__()
+        self.wasFound = None

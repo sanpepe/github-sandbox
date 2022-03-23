@@ -3,10 +3,10 @@
 # Use case objects application dependent business rules
 
 from websand.src.Context import Context
-from websand.src.PresentableCodecast import PresentableCodecast
+from websand.src.PresentableCodecastSummary import PresentableCodecastSummary
 from websand.src.License import License
 
-class PresentCodecastUseCase:
+class CodecastSummaryUseCase:
     dateFormat = "%m/%d/%Y"
 
     def presentCodecasts(self, loggedInUser):
@@ -18,21 +18,20 @@ class PresentCodecastUseCase:
 
         return presentableCodecasts
 
+    @staticmethod
+    def formatSummaryFields(loggedInUser, codecast, details):
+        details.title = codecast.getTitle()
+        details.publicationDate = codecast.getPublicationDate().strftime(CodecastSummaryUseCase.dateFormat)
+        details.isViewable = CodecastSummaryUseCase.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=loggedInUser, codecast=codecast)
+        details.isDownloadable = CodecastSummaryUseCase.isLicensedFor(licenseType=License.LicenseType.DOWNLOADING, user=loggedInUser, codecast=codecast)
+
     def formatCodecast(self, loggedInUser, codecast):
-            cc = PresentableCodecast()
-            cc.title = codecast.getTitle()
-            cc.publicationDate = codecast.getPublicationDate().strftime(PresentCodecastUseCase.dateFormat)
-            cc.isViewable = self.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=loggedInUser, codecast=codecast)
-            cc.isDownloadable = self.isLicensedFor(licenseType=License.LicenseType.DOWNLOADING, user=loggedInUser, codecast=codecast)
-            return cc
+        cc = PresentableCodecastSummary()
+        self.formatSummaryFields(loggedInUser, codecast, cc)
+        return cc
 
-    def isLicensedToViewCodecast(self, user, codecast):
-        return self.isLicensedFor(License.LicenseType.VIEWING, user, codecast)
-
-    def isLicensedToDownloadCodecast(self, user, codecast):
-        return self.isLicensedFor(License.LicenseType.DOWNLOADING, user, codecast)
-
-    def isLicensedFor(self, licenseType, user, codecast):
+    @staticmethod
+    def isLicensedFor(licenseType, user, codecast):
         licenses = Context.licenseGateway.findLicensesForUserAndCodecast(user=user, codecast=codecast)
         for l in licenses:
             if l.getType() == licenseType:
