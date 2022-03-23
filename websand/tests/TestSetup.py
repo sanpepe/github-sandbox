@@ -1,9 +1,9 @@
 import datetime
 from websand.src.Context import Context
 from websand.src.GateKeeper import GateKeeper
-from websand.src.User import User
-from websand.src.Codecast import Codecast
-from websand.src.License import License
+from websand.src.entities.User import User
+from websand.src.entities.Codecast import Codecast
+from websand.src.entities.License import License
 
 from websand.tests.doubles.InMemoryCodecastGateway import InMemoryCodecastGateway
 from websand.tests.doubles.InMemoryLicenseGateway import InMemoryLicenseGateway

@@ -1,5 +1,5 @@
 from websand.tests.doubles.GatewayUtilities import GatewayUtilities
-from websand.src.LicenseGateway  import LicenseGateway
+from websand.src.gateways.LicenseGateway  import LicenseGateway
 
 class InMemoryLicenseGateway(GatewayUtilities, LicenseGateway):
 

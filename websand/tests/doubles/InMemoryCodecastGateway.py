@@ -1,5 +1,5 @@
 from websand.tests.doubles.GatewayUtilities import GatewayUtilities
-from websand.src.CodecastGateway import CodecastGateway
+from websand.src.gateways.CodecastGateway import CodecastGateway
 
 class InMemoryCodecastGateway(GatewayUtilities, CodecastGateway):
 

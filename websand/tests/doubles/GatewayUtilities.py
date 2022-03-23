@@ -1,7 +1,7 @@
 import copy
 import uuid
 
-from websand.src.Entity import Entity
+from websand.src.entities.Entity import Entity
 
 class GatewayUtilities(Entity):
     def __init__(self):

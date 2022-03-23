@@ -1,6 +1,6 @@
 from enum import Enum
 
-from websand.src.Entity import Entity
+from websand.src.entities.Entity import Entity
 
 class License(Entity):
     class LicenseType(Enum):

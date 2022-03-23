@@ -1,5 +1,5 @@
 from websand.tests.doubles.GatewayUtilities import GatewayUtilities
-from websand.src.UserGateway  import UserGateway
+from websand.src.gateways.UserGateway  import UserGateway
 
 class InMemoryUserGateway(GatewayUtilities, UserGateway):
     def __init__(self):

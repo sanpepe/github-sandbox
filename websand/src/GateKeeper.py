@@ -1,4 +1,4 @@
-from websand.src.User import User
+from websand.src.entities.User import User
 
 class GateKeeper:
     def __init__(self):

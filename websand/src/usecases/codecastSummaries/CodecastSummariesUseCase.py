@@ -3,10 +3,10 @@
 # Use case objects application dependent business rules
 
 from websand.src.Context import Context
-from websand.src.PresentableCodecastSummary import PresentableCodecastSummary
-from websand.src.License import License
+from websand.src.usecases.codecastSummaries.PresentableCodecastSummary import PresentableCodecastSummary
+from websand.src.entities.License import License
 
-class CodecastSummaryUseCase:
+class CodecastSummariesUseCase:
     dateFormat = "%m/%d/%Y"
 
     def presentCodecasts(self, loggedInUser):
@@ -21,9 +21,9 @@ class CodecastSummaryUseCase:
     @staticmethod
     def formatSummaryFields(loggedInUser, codecast, details):
         details.title = codecast.getTitle()
-        details.publicationDate = codecast.getPublicationDate().strftime(CodecastSummaryUseCase.dateFormat)
-        details.isViewable = CodecastSummaryUseCase.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=loggedInUser, codecast=codecast)
-        details.isDownloadable = CodecastSummaryUseCase.isLicensedFor(licenseType=License.LicenseType.DOWNLOADING, user=loggedInUser, codecast=codecast)
+        details.publicationDate = codecast.getPublicationDate().strftime(CodecastSummariesUseCase.dateFormat)
+        details.isViewable = CodecastSummariesUseCase.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=loggedInUser, codecast=codecast)
+        details.isDownloadable = CodecastSummariesUseCase.isLicensedFor(licenseType=License.LicenseType.DOWNLOADING, user=loggedInUser, codecast=codecast)
 
     def formatCodecast(self, loggedInUser, codecast):
         cc = PresentableCodecastSummary()

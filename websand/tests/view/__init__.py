@@ -1,0 +1,1 @@
+# PYTHONPATH=../ && python3 -m unittest discover -s websand/tests/view -p "*_unittest.py" -v

@@ -1,7 +1,7 @@
 from websand.src.Context import Context
-from websand.src.PresentableCodecastDetails import PresentableCodecastDetails
-from websand.src.CodecastSummaryUseCase import CodecastSummaryUseCase
-from websand.src.License import License
+from websand.src.usecases.codecastDetails.PresentableCodecastDetails import PresentableCodecastDetails
+from websand.src.usecases.codecastSummaries.CodecastSummariesUseCase import CodecastSummariesUseCase
+from websand.src.entities.License import License
 
 class CodecastDetailsUseCase:
 
@@ -15,5 +15,5 @@ class CodecastDetailsUseCase:
             return pcd
         else:
             pcd.wasFound = True
-            CodecastSummaryUseCase.formatSummaryFields(loggedInUser, codecast, pcd)
+            CodecastSummariesUseCase.formatSummaryFields(loggedInUser, codecast, pcd)
             return pcd

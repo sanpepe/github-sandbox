@@ -2,7 +2,7 @@
 
 import unittest
 
-from websand.src.User import User
+from websand.src.entities.User import User
 
 class WebSandUnitTest(unittest.TestCase):
     def __init__(self, *args, **kwargs):

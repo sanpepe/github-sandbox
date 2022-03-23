@@ -1,5 +1,5 @@
 from websand.src.Context import Context
-from websand.src.Codecast import Codecast
+from websand.src.entities.Codecast import Codecast
 
 class GivenCodecasts:
     def __init__(self):

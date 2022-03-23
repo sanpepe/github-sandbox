@@ -2,10 +2,10 @@
 import unittest
 import datetime
 
-from websand.src.CodecastDetailsUseCase import CodecastDetailsUseCase
-from websand.src.User import User
-from websand.src.Codecast import Codecast
-from websand.src.License import License
+from websand.src.usecases.codecastDetails.CodecastDetailsUseCase import CodecastDetailsUseCase
+from websand.src.entities.User import User
+from websand.src.entities.Codecast import Codecast
+from websand.src.entities.License import License
 from websand.src.Context import Context
 
 from websand.tests.TestSetup import TestSetup
