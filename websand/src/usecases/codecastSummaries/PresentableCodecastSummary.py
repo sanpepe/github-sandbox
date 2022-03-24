@@ -4,4 +4,5 @@ class PresentableCodecastSummary:
         self.isDownloadable = False
         self.title = None
         self.publicationDate = None
+        self.permalink = None
 

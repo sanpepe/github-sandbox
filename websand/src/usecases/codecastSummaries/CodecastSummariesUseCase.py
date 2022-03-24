@@ -24,6 +24,7 @@ class CodecastSummariesUseCase:
         details.publicationDate = codecast.getPublicationDate().strftime(CodecastSummariesUseCase.dateFormat)
         details.isViewable = CodecastSummariesUseCase.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=loggedInUser, codecast=codecast)
         details.isDownloadable = CodecastSummariesUseCase.isLicensedFor(licenseType=License.LicenseType.DOWNLOADING, user=loggedInUser, codecast=codecast)
+        details.permalink = codecast.getPermalink()
 
     def formatCodecast(self, loggedInUser, codecast):
         cc = PresentableCodecastSummary()

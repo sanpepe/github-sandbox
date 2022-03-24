@@ -9,6 +9,11 @@ from websand.src.socketserver.SocketServer import SocketServer
 from websand.src.socketserver.SocketService import SocketService
 from websand.src.usecases.codecastSummaries.CodecastSummariesUseCase import CodecastSummariesUseCase
 from websand.src.Context import Context
+from websand.src.http.RequestParser import RequestParser
+
+from websand.src.http.Router import Router
+from websand.src.http.ParsedRequest import ParsedRequest
+from websand.src.http.Controller import Controller
 
 from websand.tests.TestSetup import TestSetup
 
@@ -21,6 +26,7 @@ def getFrontPage():
         codecastTemplate = ViewTemplate.create("codecast.html")
         codecastTemplate.replace("title", pc.title)
         codecastTemplate.replace("publicationDate", pc.publicationDate)
+        codecastTemplate.replace("permalink", pc.permalink)
 
         # Staged
         codecastTemplate.replace("thumbnail", "https://via.placeholder.com/400x200.png?text=Codecast")
@@ -41,19 +47,34 @@ def makeResponse(content):
     return response
 
 
+class CodecastSummariesContoller(Controller):
+    def __init__(self):
+        super(CodecastSummariesContoller, self).__init__()
+
+    def handle(self, parsedRequest):
+        frontPage = getFrontPage()
+        return makeResponse(frontPage)
+
 class MainService(SocketService):
     def __init__(self):
         super(MainService, self).__init__()
+        self.router = Router()
+        self.router.addPath("", CodecastSummariesContoller())
+        #self.router.addPath("episode", CodecastDetailContoller())
 
     def doService(self, s):
         #fcntl.fcntl(s, fcntl.F_SETFL, os.O_NONBLOCK)
         try:
-            request = s.recv(2**10).decode()
-            print("request msg:\n" + request)
-            frontPage = getFrontPage()
-            response = makeResponse(frontPage)
-            #print("response msg:\n" + response)
-            s.sendall(response.encode())
+            reader = s.recv(2**10).decode()
+            lines = reader.splitlines()
+            print("request msg:\n", lines)
+            request = RequestParser().parse(lines[0])
+            response = self.router.route(request)
+            print("response msg:\n", response)
+            if response:
+                s.sendall(response.encode())
+            else:
+                s.sendall("HTTP/1.1 404 ERROR\n\n".encode())
         except socket.error as e:
             err = e.args[0]
             if err == errno.EAGAIN or err == errno.EWOULDBLOCK:

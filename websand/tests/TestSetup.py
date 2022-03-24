@@ -27,12 +27,17 @@ class TestSetup():
         Context.userGateway.save(micah)
 
         today = datetime.datetime.now()
+
         ep1 = Codecast()
         ep1.setTitle("Episode 1 - The Beginning")
         ep1.setPublicationDate(datetime.datetime.now().replace(day=today.day-1))
+        ep1.setPermalink("e1")
+
         ep2 = Codecast()
         ep2.setTitle("Episode 2 - The Continuation")
         ep2.setPublicationDate(today)
+        ep2.setPermalink("e2")
+
         Context.codecastGateway.save(ep1)
         Context.codecastGateway.save(ep2)
 

@@ -1,4 +1,3 @@
-# PYTHONPATH=../ && python3 -m unittest websand/tests/CodecastSummariesUseCase_unittest.py
 import unittest
 import datetime
 
@@ -47,6 +46,7 @@ class CodecastSummariesUseCaseUnitTest(unittest.TestCase):
 
     def test_presentOneCodecasts(self):
         self.codecast.setTitle("Some Title")
+        self.codecast.setPermalink("permalink")
         now_str = '05/19/2014'
         now = datetime.datetime.strptime(now_str, '%m/%d/%Y')
         self.codecast.setPublicationDate(now)
@@ -57,6 +57,7 @@ class CodecastSummariesUseCaseUnitTest(unittest.TestCase):
         presentableCodecast = presentableCodecasts[0]
         self.assertEqual("Some Title", presentableCodecast.title)
         self.assertEqual(now_str, presentableCodecast.publicationDate)
+        self.assertEqual("permalink", presentableCodecast.permalink)
 
     def test_presentdCodecastIsNotViewableIfNoLicense(self):
         presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)

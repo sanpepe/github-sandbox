@@ -1,4 +1,3 @@
-# PYTHONPATH=../ && python3 -m unittest websand/tests/CodecastDetailsUseCase_unittest.py
 import unittest
 import datetime
 
