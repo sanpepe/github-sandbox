@@ -117,10 +117,13 @@ class SocketServerClosingServiceUnitTest(SocketServerUnitTest):
 
     def test_acceptMultipleConnections(self):
         self.server.start()
+
         self.service.wait()
         ss1 = socket.socket() ; ss1.connect(('localhost', self.port))
+
         self.service.wait()
         ss2 = socket.socket() ; ss2.connect(('localhost', self.port))
+
         self.server.stop()
         self.assertEqual(2, self.service.connections)
         ss1.close()
@@ -138,9 +141,11 @@ class SocketServerReadingServiceUnitTest(SocketServerUnitTest):
     def test_canSendAndReceiveData(self):
         msg = "hello"
         self.server.start()
+
         self.service.wait()
         ss = socket.socket() ; ss.connect(('localhost', self.port))
         ss.send(msg.encode())
+
         self.server.stop()
         self.assertEqual(msg, self.service.message)
         ss.close()
@@ -157,6 +162,7 @@ class SocketServerEchoServiceUnitTest(SocketServerUnitTest):
     def test_canEchoData(self):
         msg = "echo"
         self.server.start()
+
         self.service.wait()
         ss = socket.socket() ; ss.connect(('localhost', self.port))
         ss.send(msg.encode())
@@ -165,3 +171,26 @@ class SocketServerEchoServiceUnitTest(SocketServerUnitTest):
         self.server.stop()
         self.assertEqual(msg, response)
         ss.close()
+
+
+    def test_multipleEchos(self):
+        msg1 = "echo1"
+        msg2 = "echo2"
+
+        self.server.start()
+
+        self.service.wait()
+        ss1 = socket.socket() ; ss1.connect(('localhost', self.port)) ; ss1.send(msg1.encode())
+        response1 = ss1.recv(4096).decode()
+
+        self.service.wait()
+        ss2 = socket.socket() ; ss2.connect(('localhost', self.port)) ; ss2.send(msg2.encode())
+        response2 = ss2.recv(4096).decode()
+
+        self.server.stop()
+
+        self.assertEqual(msg1, response1)
+        self.assertEqual(msg2, response2)
+
+        ss1.close()
+        ss2.close()
