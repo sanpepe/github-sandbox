@@ -9,4 +9,8 @@ class Router:
         parts = request.path.split("/")
         controllerKey = parts[1] if len(parts) > 1 else ""
         controller = self.routes.get(controllerKey, None)
-        return controller.handle(request) if controller else ""
+
+        if controller is None:
+            return "HTTP/1.1 404 ERROR\n"
+        else:
+            return controller.handle(request)

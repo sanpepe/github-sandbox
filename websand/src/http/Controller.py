@@ -4,3 +4,7 @@ class Controller:
 
     def handle(self, parsedRequest):
         pass
+
+    def makeResponse(self, content):
+        response = "HTTP/1.1 200 OK\nContent-Length: {}\n\n".format(len(content)) + content
+        return response

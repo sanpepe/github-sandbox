@@ -2,6 +2,8 @@ import unittest
 import datetime
 
 from websand.src.usecases.codecastSummaries.CodecastSummariesUseCase import CodecastSummariesUseCase
+from websand.src.usecases.codecastSummaries.CodecastSummariesPresenter import CodecastSummariesPresenter
+
 from websand.src.entities.User import User
 from websand.src.entities.Codecast import Codecast
 from websand.src.entities.License import License
@@ -23,20 +25,20 @@ class CodecastSummariesUseCaseUnitTest(unittest.TestCase):
         self.usecase = CodecastSummariesUseCase()
 
     def test_userWithoutViewLicense_cannotViewCodecast(self):
-        ret = self.usecase.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
+        ret = CodecastSummariesPresenter.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
         self.assertFalse(ret)
 
     def test_userWithViewLicense_canViewCodecast(self):
         viewLicense = License(lintype=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
         Context.licenseGateway.save(viewLicense)
-        ret = self.usecase.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
+        ret = CodecastSummariesPresenter.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
         self.assertTrue(ret)
 
     def test_userWithoutViewLicense_cannotViewOtherUsersCodecast(self):
         otherUser = Context.userGateway.save(User("OtherUser"))
         viewLicense = License(lintype=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
         Context.licenseGateway.save(viewLicense)
-        ret = self.usecase.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=otherUser, codecast=self.codecast)
+        ret = CodecastSummariesPresenter.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=otherUser, codecast=self.codecast)
         self.assertFalse(ret)
 
     def test_presentNoCodecasts(self):

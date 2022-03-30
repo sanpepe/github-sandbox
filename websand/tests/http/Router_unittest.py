@@ -36,6 +36,12 @@ class RouterUnitTest(unittest.TestCase):
         self.router.route(request)
         self.assertEqual(self.actualRequest, request)
 
+    def test_error404(self):
+        request = ParsedRequest("GET", "/something-missing")
+        result = self.router.route(request)
+        self.assertEqual("HTTP/1.1 404 ERROR\n", result)
+
+
     class TestController(Controller):
         def __init__(self):
             super(RouterUnitTest.TestController, self).__init__()
