@@ -19,4 +19,5 @@ class CodecastSummariesControllerUnitTest(unittest.TestCase):
         pass
 
     def test_frontPage(self):
+        controller = CodecastSummariesController()
         summaries = []
