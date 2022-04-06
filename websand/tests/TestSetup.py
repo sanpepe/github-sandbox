@@ -45,3 +45,5 @@ class TestSetup():
         bobE2 = License(License.LicenseType.VIEWING, bob, ep2)
         Context.licenseGateway.save(bobE1)
         Context.licenseGateway.save(bobE2)
+
+        Context.gateKeeper.setLoggedInUser(bob)
