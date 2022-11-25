@@ -24,7 +24,7 @@ class MainService(SocketService):
     def __init__(self):
         super(MainService, self).__init__()
         self.router = Router()
-        self.router.addPath("", CodecastSummariesController(None))
+        self.router.addPath("", CodecastSummariesController(None. None))
         #self.router.addPath("episode", CodecastDetailContoller())
 
     def doService(self, s):

@@ -10,13 +10,14 @@ from websand.src.http.Controller import Controller
 
 
 class CodecastSummariesController(Controller):
-    def __init__(self, codecastSummaryInputBoundary):
+    def __init__(self, usecase, presenter):
         super(CodecastSummariesController, self).__init__()
-        self.codecastSummaryInputBoundary = codecastSummaryInputBoundary
+        self.usecase = usecase
+        self.presenter = presenter
 
     def handle(self, parsedRequest):
         loggedInUser = Context.gateKeeper.getLoggedInUser()
-        self.codecastSummaryInputBoundary.summarizeCodecasts(loggedInUser)
+        self.usecase.summarizeCodecasts(loggedInUser, self.presenter)
         usecase = CodecastSummariesUseCase()
         bob = Context.userGateway.findUserByName("Bob")
         view = CodecastSummariesView()

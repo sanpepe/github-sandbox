@@ -1,4 +1,4 @@
-class CodecastSummaryInputBoundary:
+class CodecastSummaryOutputBoundary:
     def __init__(self):
         pass
 
