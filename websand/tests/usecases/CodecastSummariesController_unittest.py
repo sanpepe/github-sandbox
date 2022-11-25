@@ -31,6 +31,8 @@ class CodecastSummariesControllerUnitTest(unittest.TestCase):
 
     def test_inputBoundaryInvocation(self):
         codecastSummaryInputBoundary = CodecastSummaryInputBoundarySpy()
+        codecastSummaryOutputBoundary = CodecastSummaryOutputBoundarySpy()
+
         controller = CodecastSummariesController(codecastSummaryInputBoundary)
         request = ParsedRequest("GET", "/")
         controller.handle(request)
