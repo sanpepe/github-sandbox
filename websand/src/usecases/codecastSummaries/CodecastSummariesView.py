@@ -2,5 +2,5 @@ class CodecastSummariesView():
     def __init__(self):
         pass
 
-    def toHTML(self, presentableCodecasts):
+    def generateView(self, responseModel):
         pass
