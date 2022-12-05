@@ -30,7 +30,7 @@ class TestSetup():
 
         ep1 = Codecast()
         ep1.setTitle("Episode 1 - The Beginning")
-        ep1.setPublicationDate(datetime.datetime.now().replace(day=today.day-1))
+        ep1.setPublicationDate(datetime.datetime.now().replace(day=today.day))
         ep1.setPermalink("e1")
 
         ep2 = Codecast()

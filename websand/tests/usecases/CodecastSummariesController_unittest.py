@@ -3,6 +3,7 @@ import datetime
 
 from websand.src.usecases.codecastSummaries.CodecastSummariesController import CodecastSummariesController
 from websand.src.usecases.codecastSummaries.CodecastSummaryResponseModel import CodecastSummaryResponseModel
+from websand.src.usecases.codecastSummaries.CodecastSummariesView import CodecastSummariesView
 from websand.src.usecases.codecastSummaries.CodecastSummaryInputBoundary import CodecastSummaryInputBoundary
 from websand.src.usecases.codecastSummaries.CodecastSummaryOutputBoundary import CodecastSummaryOutputBoundary
 
@@ -26,12 +27,16 @@ class CodecastSummaryInputBoundarySpy(CodecastSummaryInputBoundary):
 
 class CodecastSummaryOutputBoundarySpy(CodecastSummaryOutputBoundary):
     def __init__(self):
-        pass
+        self.responseModel = None
 
     def summarizeCodecasts(self, loggedInUser, presenter):
         pass
 
 
+class CodecastSummariesViewSpy(CodecastSummariesView):
+    def __init__(self):
+        self.generateViewWasCalled = False
+        self.responseModel = None
 
 class CodecastSummariesControllerUnitTest(unittest.TestCase):
     def __init__(self, *args, **kwargs):
@@ -40,29 +45,25 @@ class CodecastSummariesControllerUnitTest(unittest.TestCase):
 
     def setUp(self):
         TestSetup.setupSampleData()
+        self.usecaseSpy = CodecastSummaryInputBoundarySpy()
+        self.presenterSpy = CodecastSummaryOutputBoundarySpy()
+        self.viewSpy = CodecastSummariesViewSpy()
+        self.controller = CodecastSummariesController(self.usecaseSpy, self.presenterSpy, self.viewSpy)
 
     def test_inputBoundaryInvocation(self):
-        usecaseSpy = CodecastSummaryInputBoundarySpy()
-        presenterSpy = CodecastSummaryOutputBoundarySpy()
-
-        controller = CodecastSummariesController(usecaseSpy, presenterSpy)
         request = ParsedRequest("GET", "/")
-        controller.handle(request)
+        self.controller.handle(request)
         loggedInUser = Context.userGateway.findUserByName("Bob").getID()
 
-        self.assertTrue(usecaseSpy.summarizeCodecastWasCalled)
-        self.assertEqual(loggedInUser, usecaseSpy.requestedUser.getID())
+        self.assertTrue(self.usecaseSpy.summarizeCodecastWasCalled)
+        self.assertEqual(loggedInUser, self.usecaseSpy.requestedUser.getID())
 
-        self.assertIsNotNone(usecaseSpy.outputBoundary)
-        self.assertIs(presenterSpy, usecaseSpy.outputBoundary)
+        self.assertIsNotNone(self.usecaseSpy.outputBoundary)
+        self.assertIs(self.presenterSpy, self.usecaseSpy.outputBoundary)
 
     def test_controllerSendsTheResponseModelToView(self):
-        pass
-        #usecaseSpy = CodecastSummaryInputBoundarySpy()
-        #presenterSpy = CodecastSummaryOutputBoundarySpy()
-        #viewSpy = CodecastSummaryView()
-        #controller = CodecastSummariesController(usecaseSpy, presenterSpy, viewSpy)
-        #request = ParsedRequest("GET", "/")
-        #controller.handle(request)
-        #self.assertTrue(viewSpy.generateViewWasCalled)
-        #self.assertIs(presenterSpy.responseModel, viewSpy.reponseModel)
+        self.presenterSpy.responseModel = CodecastSummaryResponseModel()
+        request = ParsedRequest("GET", "/")
+        self.controller.handle(request)
+        self.assertTrue(self.viewSpy.generateViewWasCalled)
+        self.assertIs(self.presenterSpy.responseModel, self.viewSpy.responseModel)
