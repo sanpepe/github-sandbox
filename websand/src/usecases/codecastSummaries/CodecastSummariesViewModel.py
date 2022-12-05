@@ -1,4 +1,4 @@
-class CodecastSummaryViewModel:
+class CodecastSummariesViewModel:
     def __init__(self):
         self.isViewable = False
         self.isDownloadable = False

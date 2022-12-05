@@ -2,7 +2,7 @@ import unittest
 import datetime
 
 from websand.src.usecases.codecastSummaries.CodecastSummariesController import CodecastSummariesController
-from websand.src.usecases.codecastSummaries.CodecastSummaryResponseModel import CodecastSummaryResponseModel
+from websand.src.usecases.codecastSummaries.CodecastSummaryResponseModel import CodecastSummariesResponseModel
 from websand.src.usecases.codecastSummaries.CodecastSummariesView import CodecastSummariesView
 from websand.src.usecases.codecastSummaries.CodecastSummaryInputBoundary import CodecastSummaryInputBoundary
 from websand.src.usecases.codecastSummaries.CodecastSummaryOutputBoundary import CodecastSummaryOutputBoundary
@@ -61,7 +61,7 @@ class CodecastSummariesControllerUnitTest(unittest.TestCase):
         self.assertIs(self.presenterSpy, self.usecaseSpy.outputBoundary)
 
     def test_controllerSendsTheResponseModelToView(self):
-        self.presenterSpy.responseModel = CodecastSummaryResponseModel()
+        self.presenterSpy.responseModel = CodecastSummariesResponseModel()
         request = ParsedRequest("GET", "/")
         self.controller.handle(request)
         self.assertTrue(self.viewSpy.generateViewWasCalled)
