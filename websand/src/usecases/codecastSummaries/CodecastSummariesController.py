@@ -19,6 +19,7 @@ class CodecastSummariesController(Controller):
     def handle(self, parsedRequest):
         loggedInUser = Context.gateKeeper.getLoggedInUser()
         self.usecase.summarizeCodecasts(loggedInUser, self.presenter)
+        self.view.generateView(self.presenter.getResponseModel())
         usecase = CodecastSummariesUseCase()
         bob = Context.userGateway.findUserByName("Bob")
         view = CodecastSummariesViewImpl()
