@@ -57,7 +57,6 @@ class CodecastSummariesControllerUnitTest(unittest.TestCase):
 
         self.assertTrue(self.usecaseSpy.summarizeCodecastWasCalled)
         self.assertEqual(loggedInUser, self.usecaseSpy.requestedUser.getID())
-
         self.assertIsNotNone(self.usecaseSpy.outputBoundary)
         self.assertIs(self.presenterSpy, self.usecaseSpy.outputBoundary)
 
