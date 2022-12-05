@@ -32,6 +32,9 @@ class CodecastSummariesOutputBoundarySpy(CodecastSummariesOutputBoundary):
     def summarizeCodecasts(self, loggedInUser, presenter):
         pass
 
+    def getResponseModel(self):
+        return self.responseModel
+
 
 class CodecastSummariesViewSpy(CodecastSummariesView):
     def __init__(self):
@@ -39,7 +42,8 @@ class CodecastSummariesViewSpy(CodecastSummariesView):
         self.responseModel = None
 
     def generateView(self, responseModel):
-        pass
+        self.responseModel = self.responseModel
+        return None
 
 class CodecastSummariesControllerUnitTest(unittest.TestCase):
     def __init__(self, *args, **kwargs):
