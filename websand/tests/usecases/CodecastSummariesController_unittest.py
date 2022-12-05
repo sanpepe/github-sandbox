@@ -38,6 +38,9 @@ class CodecastSummariesViewSpy(CodecastSummariesView):
         self.generateViewWasCalled = False
         self.responseModel = None
 
+    def generateView(self, responseModel):
+        pass
+
 class CodecastSummariesControllerUnitTest(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super(CodecastSummariesControllerUnitTest, self).__init__(*args, **kwargs)
