@@ -1,14 +1,14 @@
 from websand.src.Context import Context
 from websand.src.entities.License import License
 
-from websand.src.usecases.codecastSummaries.CodecastSummaryViewModel import CodecastSummaryViewModel
+from websand.src.usecases.codecastSummaries.CodecastSummariesViewModel import CodecastSummariesViewModel
 
 class CodecastSummariesPresenter:
     dateFormat = "%m/%d/%Y"
 
     @staticmethod
     def formatCodecast(loggedInUser, codecast):
-        cc = CodecastSummaryViewModel()
+        cc = CodecastSummariesViewModel()
         CodecastSummariesPresenter.formatSummaryFields(loggedInUser, codecast, cc)
         return cc
 

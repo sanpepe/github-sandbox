@@ -2,10 +2,10 @@ import unittest
 import datetime
 
 from websand.src.usecases.codecastSummaries.CodecastSummariesController import CodecastSummariesController
-from websand.src.usecases.codecastSummaries.CodecastSummaryResponseModel import CodecastSummariesResponseModel
+from websand.src.usecases.codecastSummaries.CodecastSummariesResponseModel import CodecastSummariesResponseModel
 from websand.src.usecases.codecastSummaries.CodecastSummariesView import CodecastSummariesView
-from websand.src.usecases.codecastSummaries.CodecastSummaryInputBoundary import CodecastSummaryInputBoundary
-from websand.src.usecases.codecastSummaries.CodecastSummaryOutputBoundary import CodecastSummaryOutputBoundary
+from websand.src.usecases.codecastSummaries.CodecastSummariesInputBoundary import CodecastSummariesInputBoundary
+from websand.src.usecases.codecastSummaries.CodecastSummariesOutputBoundary import CodecastSummariesOutputBoundary
 
 from websand.src.http.ParsedRequest import ParsedRequest
 
@@ -14,7 +14,7 @@ from websand.src.Context import Context
 
 from websand.tests.TestSetup import TestSetup
 
-class CodecastSummaryInputBoundarySpy(CodecastSummaryInputBoundary):
+class CodecastSummariesInputBoundarySpy(CodecastSummariesInputBoundary):
     def __init__(self):
         self.summarizeCodecastWasCalled = False
         self.requestedUser = None
@@ -25,7 +25,7 @@ class CodecastSummaryInputBoundarySpy(CodecastSummaryInputBoundary):
         self.requestedUser = loggedInUser
         self.outputBoundary = presenter
 
-class CodecastSummaryOutputBoundarySpy(CodecastSummaryOutputBoundary):
+class CodecastSummariesOutputBoundarySpy(CodecastSummariesOutputBoundary):
     def __init__(self):
         self.responseModel = None
 
@@ -45,8 +45,8 @@ class CodecastSummariesControllerUnitTest(unittest.TestCase):
 
     def setUp(self):
         TestSetup.setupSampleData()
-        self.usecaseSpy = CodecastSummaryInputBoundarySpy()
-        self.presenterSpy = CodecastSummaryOutputBoundarySpy()
+        self.usecaseSpy = CodecastSummariesInputBoundarySpy()
+        self.presenterSpy = CodecastSummariesOutputBoundarySpy()
         self.viewSpy = CodecastSummariesViewSpy()
         self.controller = CodecastSummariesController(self.usecaseSpy, self.presenterSpy, self.viewSpy)
 
