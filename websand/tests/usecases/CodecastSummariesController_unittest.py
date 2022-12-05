@@ -76,4 +76,4 @@ class CodecastSummariesControllerUnitTest(unittest.TestCase):
         self.assertIs(self.presenterSpy.responseModel, self.viewSpy.responseModel)
 
     def test_githubcraze(self):
-        pass
+        return True
