@@ -74,3 +74,6 @@ class CodecastSummariesControllerUnitTest(unittest.TestCase):
         self.controller.handle(request)
         self.assertTrue(self.viewSpy.generateViewWasCalled)
         self.assertIs(self.presenterSpy.responseModel, self.viewSpy.responseModel)
+
+    def test_githubcraze(self):
+        pass
