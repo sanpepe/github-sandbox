@@ -3,7 +3,7 @@ import datetime
 
 from websand.src.usecases.codecastSummaries.CodecastSummariesController import CodecastSummariesController
 from websand.src.usecases.codecastSummaries.CodecastSummariesResponseModel import CodecastSummariesResponseModel
-from websand.src.usecases.codecastSummaries.CodecastSummariesView import CodecastSummariesView
+from websand.src.usecases.codecastSummaries.CodecastSummariesView import CodecastSummariesViewImpl
 from websand.src.usecases.codecastSummaries.CodecastSummariesInputBoundary import CodecastSummariesInputBoundary
 from websand.src.usecases.codecastSummaries.CodecastSummariesOutputBoundary import CodecastSummariesOutputBoundary
 
@@ -33,7 +33,7 @@ class CodecastSummariesOutputBoundarySpy(CodecastSummariesOutputBoundary):
         pass
 
 
-class CodecastSummariesViewSpy(CodecastSummariesView):
+class CodecastSummariesViewSpy(CodecastSummariesViewImpl):
     def __init__(self):
         self.generateViewWasCalled = False
         self.responseModel = None

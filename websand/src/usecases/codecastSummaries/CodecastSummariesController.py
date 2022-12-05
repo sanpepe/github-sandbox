@@ -1,6 +1,6 @@
 
 from websand.src.usecases.codecastSummaries.CodecastSummariesUseCase import CodecastSummariesUseCase
-from websand.src.usecases.codecastSummaries.CodecastSummariesView import CodecastSummariesView
+from websand.src.usecases.codecastSummaries.CodecastSummariesViewImpl import CodecastSummariesViewImpl
 
 from websand.src.Context import Context
 
@@ -21,7 +21,7 @@ class CodecastSummariesController(Controller):
         self.usecase.summarizeCodecasts(loggedInUser, self.presenter)
         usecase = CodecastSummariesUseCase()
         bob = Context.userGateway.findUserByName("Bob")
-        view = CodecastSummariesView()
+        view = CodecastSummariesViewImpl()
         html = view.toHTML(usecase.presentCodecasts(bob))
         return self.makeResponse(html)
 
