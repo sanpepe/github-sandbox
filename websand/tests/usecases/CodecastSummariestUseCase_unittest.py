@@ -28,6 +28,7 @@ class CodecastSummariesUseCaseUnitTest(unittest.TestCase):
     def test_usecaseWiring(self):
         presenterSpy = CodecastSummariesOutputBoundarySpy()
         self.usecase.summarizeCodecasts(self.user, presenterSpy)
+        self.assertIsNotNone(presenterSpy.responseModel)
 
     def test_userWithoutViewLicense_cannotViewCodecast(self):
         ret = CodecastSummariesPresenter.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
@@ -59,12 +60,14 @@ class CodecastSummariesUseCaseUnitTest(unittest.TestCase):
         self.codecast.setPublicationDate(now)
         Context.codecastGateway.save(self.codecast);
 
-        presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
-        self.assertEqual(1, len(presentableCodecasts))
-        presentableCodecast = presentableCodecasts[0]
-        self.assertEqual("Some Title", presentableCodecast.title)
-        self.assertEqual(now_str, presentableCodecast.publicationDate)
-        self.assertEqual("permalink", presentableCodecast.permalink)
+        presenterSpy = CodecastSummariesOutputBoundarySpy()
+        self.usecase.summarizeCodecasts(self.user, presenterSpy)
+        # presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
+        self.assertEqual(1, len(presenterSpy.responseModel.getCodecastSummaries()))
+        codecastSummary = presenterSpy.responseModel.getCodecastSummaries()[0]
+        self.assertEqual("Some Title", codecastSummary.title)
+        self.assertEqual(now, codecastSummary.publicationDate)
+        self.assertEqual("permalink", codecastSummary.permalink)
 
     def test_presentdCodecastIsNotViewableIfNoLicense(self):
         presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)

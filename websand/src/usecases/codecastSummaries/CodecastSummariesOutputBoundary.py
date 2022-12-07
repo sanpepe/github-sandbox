@@ -4,3 +4,6 @@ class CodecastSummariesOutputBoundary:
 
     def getViewModel(self):
         pass
+
+    def present(self, responseModel):
+        pass

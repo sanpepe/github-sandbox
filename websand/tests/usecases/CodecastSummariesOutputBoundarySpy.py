@@ -3,9 +3,10 @@ from websand.src.usecases.codecastSummaries.CodecastSummariesOutputBoundary impo
 class CodecastSummariesOutputBoundarySpy(CodecastSummariesOutputBoundary):
     def __init__(self):
         self.viewModel = None
-
-    def summarizeCodecasts(self, loggedInUser, presenter):
-        pass
+        self.responseModel = None
 
     def getViewModel(self):
         return self.viewModel
+
+    def present(self, responseModel):
+        self.responseModel = responseModel
