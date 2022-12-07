@@ -2,10 +2,10 @@ import unittest
 import datetime
 
 from websand.src.usecases.codecastSummaries.CodecastSummariesController import CodecastSummariesController
-from websand.src.usecases.codecastSummaries.CodecastSummariesResponseModel import CodecastSummariesResponseModel
+from websand.src.usecases.codecastSummaries.CodecastSummariesViewModel import CodecastSummariesViewModel
 from websand.src.usecases.codecastSummaries.CodecastSummariesView import CodecastSummariesView
 from websand.src.usecases.codecastSummaries.CodecastSummariesInputBoundary import CodecastSummariesInputBoundary
-from websand.src.usecases.codecastSummaries.CodecastSummariesOutputBoundary import CodecastSummariesOutputBoundary
+from websand.tests.usecases.CodecastSummariesOutputBoundarySpy import CodecastSummariesOutputBoundarySpy
 
 from websand.src.http.ParsedRequest import ParsedRequest
 
@@ -25,24 +25,13 @@ class CodecastSummariesInputBoundarySpy(CodecastSummariesInputBoundary):
         self.requestedUser = loggedInUser
         self.outputBoundary = presenter
 
-class CodecastSummariesOutputBoundarySpy(CodecastSummariesOutputBoundary):
-    def __init__(self):
-        self.responseModel = None
-
-    def summarizeCodecasts(self, loggedInUser, presenter):
-        pass
-
-    def getResponseModel(self):
-        return self.responseModel
-
-
 class CodecastSummariesViewSpy(CodecastSummariesView):
     def __init__(self):
         self.generateViewWasCalled = False
-        self.responseModel = None
+        self.viewModel = None
 
-    def generateView(self, responseModel):
-        self.responseModel = responseModel
+    def generateView(self, viewModel):
+        self.viewModel = viewModel
         self.generateViewWasCalled = True
         return None
 
@@ -68,9 +57,9 @@ class CodecastSummariesControllerUnitTest(unittest.TestCase):
         self.assertIsNotNone(self.usecaseSpy.outputBoundary)
         self.assertIs(self.presenterSpy, self.usecaseSpy.outputBoundary)
 
-    def test_controllerSendsTheResponseModelToView(self):
-        self.presenterSpy.responseModel = CodecastSummariesResponseModel()
-        request = ParsedRequest("GET", "/")
+    def test_controllerSendsTheViewModelToTheView(self):
+        self.presenterSpy.viewModel = CodecastSummariesViewModel()
+        request = ParsedRequest("GET", "/blah")
         self.controller.handle(request)
         self.assertTrue(self.viewSpy.generateViewWasCalled)
-        self.assertIs(self.presenterSpy.responseModel, self.viewSpy.responseModel)
+        self.assertIs(self.presenterSpy.viewModel, self.viewSpy.viewModel)

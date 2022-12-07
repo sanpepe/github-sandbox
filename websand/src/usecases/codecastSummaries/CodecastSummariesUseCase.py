@@ -5,9 +5,9 @@
 from websand.src.Context import Context
 from websand.src.entities.License import License
 from websand.src.usecases.codecastSummaries.CodecastSummariesPresenter import CodecastSummariesPresenter
+from websand.src.usecases.codecastSummaries.CodecastSummariesInputBoundary import CodecastSummariesInputBoundary
 
-
-class CodecastSummariesUseCase:
+class CodecastSummariesUseCase(CodecastSummariesInputBoundary):
 
     def presentCodecasts(self, loggedInUser):
         presentableCodecasts = []
@@ -17,3 +17,6 @@ class CodecastSummariesUseCase:
             presentableCodecasts.append(CodecastSummariesPresenter.formatCodecast(loggedInUser, codecast))
 
         return presentableCodecasts
+
+    def summarizeCodecasts(self, user, presenter):
+        pass

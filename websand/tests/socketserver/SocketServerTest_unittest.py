@@ -162,6 +162,7 @@ class SocketServerEchoServiceUnitTest(SocketServerUnitTest):
     def test_canEchoData(self):
         msg = "echo"
         self.server.start()
+        time.sleep(0.1)
 
         self.service.wait()
         ss = socket.socket() ; ss.connect(('localhost', self.port))
@@ -178,6 +179,7 @@ class SocketServerEchoServiceUnitTest(SocketServerUnitTest):
         msg2 = "echo2"
 
         self.server.start()
+        time.sleep(0.1)
 
         self.service.wait()
         ss1 = socket.socket() ; ss1.connect(('localhost', self.port)) ; ss1.send(msg1.encode())

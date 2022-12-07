@@ -3,6 +3,7 @@ import datetime
 
 from websand.src.usecases.codecastSummaries.CodecastSummariesUseCase import CodecastSummariesUseCase
 from websand.src.usecases.codecastSummaries.CodecastSummariesPresenter import CodecastSummariesPresenter
+from websand.tests.usecases.CodecastSummariesOutputBoundarySpy import CodecastSummariesOutputBoundarySpy
 
 from websand.src.entities.User import User
 from websand.src.entities.Codecast import Codecast
@@ -23,6 +24,10 @@ class CodecastSummariesUseCaseUnitTest(unittest.TestCase):
         self.user = Context.userGateway.save(User("User"))
         self.codecast = Context.codecastGateway.save(Codecast())
         self.usecase = CodecastSummariesUseCase()
+
+    def test_usecaseWiring(self):
+        presenterSpy = CodecastSummariesOutputBoundarySpy()
+        self.usecase.summarizeCodecasts(self.user, presenterSpy)
 
     def test_userWithoutViewLicense_cannotViewCodecast(self):
         ret = CodecastSummariesPresenter.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)

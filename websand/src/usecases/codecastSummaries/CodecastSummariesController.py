@@ -19,7 +19,7 @@ class CodecastSummariesController(Controller):
     def handle(self, parsedRequest):
         loggedInUser = Context.gateKeeper.getLoggedInUser()
         self.usecase.summarizeCodecasts(loggedInUser, self.presenter)
-        self.view.generateView(self.presenter.getResponseModel())
+        self.view.generateView(self.presenter.getViewModel())
 
         # TODO: Not in Vids
         usecase = CodecastSummariesUseCase()

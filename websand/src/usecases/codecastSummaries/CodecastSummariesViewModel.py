@@ -1,8 +1,5 @@
+from websand.src.usecases.codecastSummaries.CodecastSummariesResponseModel import CodecastSummariesResponseModel
+
 class CodecastSummariesViewModel:
     def __init__(self):
-        self.isViewable = False
-        self.isDownloadable = False
-        self.title = None
-        self.publicationDate = None
-        self.permalink = None
-
+        pass
