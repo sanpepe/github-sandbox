@@ -22,11 +22,11 @@ class CodecastSummariesController(Controller):
         self.view.generateView(self.presenter.getViewModel())
 
         # TODO: Not in Vids
-        usecase = CodecastSummariesUseCase()
-        bob = Context.userGateway.findUserByName("Bob")
-        view = CodecastSummariesViewImpl()
-        html = view.toHTML(usecase.presentCodecasts(bob))
+        #usecase = CodecastSummariesUseCase()
+        #bob = Context.userGateway.findUserByName("Bob")
+        #view = CodecastSummariesViewImpl()
+        #html = view.toHTML(usecase.presentCodecasts(bob))
         ##################################################
 
-        return self.makeResponse(html)
+        return self.presenter.responseModel # self.makeResponse(html)
 

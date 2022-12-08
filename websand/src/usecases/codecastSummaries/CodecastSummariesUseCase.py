@@ -12,20 +12,13 @@ from websand.src.usecases.codecastSummaries.CodecastSummary import CodecastSumma
 
 class CodecastSummariesUseCase(CodecastSummariesInputBoundary):
 
-    def presentCodecasts(self, loggedInUser):
-        presentableCodecasts = []
-        allCodecasts = Context.codecastGateway.findAllCodecastsSortedChronologically()
-
-        for codecast in allCodecasts:
-            presentableCodecasts.append(CodecastSummariesPresenter.formatCodecast(loggedInUser, codecast))
-
-        return presentableCodecasts
-
-    def summarizeCodecast(self, codecast):
+    def summarizeCodecast(self, codecast, user):
         summary = CodecastSummary()
         summary.title = codecast.getTitle()
         summary.publicationDate = codecast.getPublicationDate()
         summary.permalink = codecast.getPermalink()
+        summary.isViewable = CodecastSummariesPresenter.isLicensedFor(License.LicenseType.VIEWING, user, codecast)
+        summary.isDownloadable = CodecastSummariesPresenter.isLicensedFor(License.LicenseType.DOWNLOADING, user, codecast)
 
         return summary
 
@@ -34,6 +27,6 @@ class CodecastSummariesUseCase(CodecastSummariesInputBoundary):
         allCodecasts = Context.codecastGateway.findAllCodecastsSortedChronologically()
 
         for codecast in allCodecasts:
-            responseModel.addCodecastSummary(self.summarizeCodecast(codecast))
+            responseModel.addCodecastSummary(self.summarizeCodecast(codecast, user))
 
         presenter.present(responseModel)

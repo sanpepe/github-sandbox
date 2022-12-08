@@ -24,11 +24,11 @@ class CodecastSummariesUseCaseUnitTest(unittest.TestCase):
         self.user = Context.userGateway.save(User("User"))
         self.codecast = Context.codecastGateway.save(Codecast())
         self.usecase = CodecastSummariesUseCase()
+        self.presenterSpy = CodecastSummariesOutputBoundarySpy()
 
     def test_usecaseWiring(self):
-        presenterSpy = CodecastSummariesOutputBoundarySpy()
-        self.usecase.summarizeCodecasts(self.user, presenterSpy)
-        self.assertIsNotNone(presenterSpy.responseModel)
+        self.usecase.summarizeCodecasts(self.user, self.presenterSpy )
+        self.assertIsNotNone(self.presenterSpy.responseModel)
 
     def test_userWithoutViewLicense_cannotViewCodecast(self):
         ret = CodecastSummariesPresenter.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
@@ -49,8 +49,8 @@ class CodecastSummariesUseCaseUnitTest(unittest.TestCase):
 
     def test_presentNoCodecasts(self):
         Context.codecastGateway.delete(self.codecast)
-        presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
-        self.assertEqual(0, len(presentableCodecasts))
+        self.usecase.summarizeCodecasts(self.user, self.presenterSpy)
+        self.assertEqual(0, len(self.presenterSpy.responseModel.getCodecastSummaries()))
 
     def test_presentOneCodecasts(self):
         self.codecast.setTitle("Some Title")
@@ -60,31 +60,32 @@ class CodecastSummariesUseCaseUnitTest(unittest.TestCase):
         self.codecast.setPublicationDate(now)
         Context.codecastGateway.save(self.codecast);
 
-        presenterSpy = CodecastSummariesOutputBoundarySpy()
-        self.usecase.summarizeCodecasts(self.user, presenterSpy)
-        # presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
-        self.assertEqual(1, len(presenterSpy.responseModel.getCodecastSummaries()))
-        codecastSummary = presenterSpy.responseModel.getCodecastSummaries()[0]
+        self.usecase.summarizeCodecasts(self.user, self.presenterSpy)
+
+        self.assertEqual(1, len(self.presenterSpy.responseModel.getCodecastSummaries()))
+        codecastSummary = self.presenterSpy.responseModel.getCodecastSummaries()[0]
         self.assertEqual("Some Title", codecastSummary.title)
         self.assertEqual(now, codecastSummary.publicationDate)
         self.assertEqual("permalink", codecastSummary.permalink)
 
     def test_presentdCodecastIsNotViewableIfNoLicense(self):
-        presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
-        presentableCodecast = presentableCodecasts[0]
-        self.assertFalse(presentableCodecast.isViewable)
+        self.usecase.summarizeCodecasts(self.user, self.presenterSpy)
+        summary = self.presenterSpy.responseModel.getCodecastSummaries()[0]
+        self.assertFalse(summary.isViewable)
 
     def test_presentedCodecastIsViewableIfLicenseExists(self):
         viewableLicense = License(lintype=License.LicenseType.VIEWING, user=self.user, codecast=self.codecast)
         Context.licenseGateway.save(viewableLicense)
-        presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
-        presentableCodecast = presentableCodecasts[0]
-        self.assertTrue(presentableCodecast.isViewable)
+
+        self.usecase.summarizeCodecasts(self.user, self.presenterSpy)
+        summary = self.presenterSpy.responseModel.getCodecastSummaries()[0]
+
+        self.assertTrue(summary.isViewable)
 
     def test_presentedCodecastIsDownloadableIfDownloadLicenseExists(self):
         downloadLicense = License(lintype=License.LicenseType.DOWNLOADING, user=self.user, codecast=self.codecast)
         Context.licenseGateway.save(downloadLicense)
-        presentableCodecasts = self.usecase.presentCodecasts(loggedInUser=self.user)
-        presentableCodecast = presentableCodecasts[0]
-        self.assertTrue(presentableCodecast.isDownloadable)
-        self.assertFalse(presentableCodecast.isViewable)
+        self.usecase.summarizeCodecasts(self.user, self.presenterSpy)
+        summary = self.presenterSpy.responseModel.getCodecastSummaries()[0]
+        self.assertTrue(summary.isDownloadable)
+        self.assertFalse(summary.isViewable)
