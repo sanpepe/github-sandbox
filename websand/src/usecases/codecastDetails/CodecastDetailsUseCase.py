@@ -15,5 +15,5 @@ class CodecastDetailsUseCase:
             return pcd
         else:
             pcd.wasFound = True
-            CodecastSummariesPresenter.formatSummaryFields(loggedInUser, codecast, pcd)
+            #CodecastSummariesPresenter.formatSummaryFields(loggedInUser, codecast, pcd)
             return pcd
