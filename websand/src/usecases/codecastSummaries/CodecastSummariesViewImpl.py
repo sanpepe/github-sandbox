@@ -5,8 +5,8 @@ class CodecastSummariesViewImpl(CodecastSummariesView):
     def __init__(self):
         super(CodecastSummariesViewImpl, self).__init__()
 
-    def generateView(self, responseModel):
-        pass
+    def generateView(self, viewModel):
+        return self.toHTML(viewModel.getViewableCodecasts())
 
     def toHTML(self, presentableCodecasts):
         codecastlines = ""

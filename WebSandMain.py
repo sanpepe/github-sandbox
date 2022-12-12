@@ -8,6 +8,8 @@ from websand.src.view.ViewTemplate import ViewTemplate
 from websand.src.socketserver.SocketServer import SocketServer
 from websand.src.socketserver.SocketService import SocketService
 from websand.src.usecases.codecastSummaries.CodecastSummariesUseCase import CodecastSummariesUseCase
+from websand.src.usecases.codecastSummaries.CodecastSummariesPresenter import CodecastSummariesPresenter
+from websand.src.usecases.codecastSummaries.CodecastSummariesViewImpl import CodecastSummariesViewImpl
 from websand.src.usecases.codecastSummaries.CodecastSummariesController import CodecastSummariesController
 from websand.src.Context import Context
 from websand.src.http.RequestParser import RequestParser
@@ -24,7 +26,10 @@ class MainService(SocketService):
     def __init__(self):
         super(MainService, self).__init__()
         self.router = Router()
-        self.router.addPath("", CodecastSummariesController(None, None, None))
+        self.usecase = CodecastSummariesUseCase()
+        self.presenter = CodecastSummariesPresenter()
+        self.view = CodecastSummariesViewImpl()
+        self.router.addPath("", CodecastSummariesController(self.usecase, self.presenter, self.view))
         #self.router.addPath("episode", CodecastDetailContoller())
 
     def doService(self, s):
