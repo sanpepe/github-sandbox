@@ -2,11 +2,6 @@ from websand.src.usecases.codecastSummaries.CodecastSummary import CodecastSumma
 
 class CodecastSummariesResponseModel:
     def __init__(self):
-        self.isViewable = False
-        self.isDownloadable = False
-        self.title = None
-        self.publicationDate = None
-        self.permalink = None
         self.codecastSummaries = []
     
     def getCodecastSummaries(self):

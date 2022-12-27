@@ -33,7 +33,7 @@ class CodecastSummariesViewSpy(CodecastSummariesView):
     def generateView(self, viewModel):
         self.viewModel = viewModel
         self.generateViewWasCalled = True
-        return None
+        return ""
 
 class CodecastSummariesControllerUnitTest(unittest.TestCase):
     def __init__(self, *args, **kwargs):

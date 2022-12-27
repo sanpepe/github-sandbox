@@ -20,5 +20,8 @@ class CodecastSummariesController(Controller):
         loggedInUser = Context.gateKeeper.getLoggedInUser()
         self.usecase.summarizeCodecasts(loggedInUser, self.presenter)
         ret = self.view.generateView(self.presenter.getViewModel())
-        return ret
+
+        html_ret = "HTTP/1.1 200 OK\nContent-Length: {}\nContent-Type: text/html\n\n".format(len(ret)) + ret
+
+        return html_ret
 

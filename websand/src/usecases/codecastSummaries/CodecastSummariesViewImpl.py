@@ -10,11 +10,11 @@ class CodecastSummariesViewImpl(CodecastSummariesView):
 
     def toHTML(self, presentableCodecasts):
         codecastlines = ""
-        for pc in presentableCodecasts:
+        for viewableCodecastSummary in presentableCodecasts:
             codecastTemplate = ViewTemplate.create("codecast.html")
-            codecastTemplate.replace("title", pc.title)
-            codecastTemplate.replace("publicationDate", pc.publicationDate)
-            codecastTemplate.replace("permalink", pc.permalink)
+            codecastTemplate.replace("title", viewableCodecastSummary.title)
+            codecastTemplate.replace("publicationDate", viewableCodecastSummary.publicationDate)
+            codecastTemplate.replace("permalink", viewableCodecastSummary.permalink)
 
             # Staged
             codecastTemplate.replace("thumbnail", "https://via.placeholder.com/400x200.png?text=Codecast")

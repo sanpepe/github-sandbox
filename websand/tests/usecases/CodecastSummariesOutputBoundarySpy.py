@@ -2,7 +2,7 @@ from websand.src.usecases.codecastSummaries.CodecastSummariesOutputBoundary impo
 
 class CodecastSummariesOutputBoundarySpy(CodecastSummariesOutputBoundary):
     def __init__(self):
-        self.viewModel = None
+        self.viewModel = ""
         self.responseModel = None
 
     def getViewModel(self):

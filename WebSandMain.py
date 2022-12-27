@@ -37,10 +37,10 @@ class MainService(SocketService):
         try:
             reader = s.recv(2**10).decode()
             lines = reader.splitlines()
-            print("request msg:\n", lines)
+            print("request msg:\n" + str(lines))
             request = RequestParser().parse(lines[0])
             response = self.router.route(request)
-            print("response msg:\n", response)
+            print("response msg:\n" + response)
             s.sendall(response.encode())
 
         except socket.error as e:
@@ -61,12 +61,6 @@ class MainService(SocketService):
 class Main():
     def __init__(self, *args, **kwargs):
         TestSetup.setupSampleData()
-
-    def getServer(self):
-        return self.server
-
-    def getCodecastGateway(self):
-        return self.codecastGateway
 
     def run(self):
         self.mainService = MainService()
