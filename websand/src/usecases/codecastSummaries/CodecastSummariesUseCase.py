@@ -17,6 +17,8 @@ class CodecastSummariesUseCase(CodecastSummariesInputBoundary):
         summary.title = codecast.getTitle()
         summary.publicationDate = codecast.getPublicationDate()
         summary.permalink = codecast.getPermalink()
+        summary.duration = codecast.getDuration()
+        summary.author = codecast.getAuthor()
         summary.isViewable = CodecastSummariesPresenter.isLicensedFor(License.LicenseType.VIEWING, user, codecast)
         summary.isDownloadable = CodecastSummariesPresenter.isLicensedFor(License.LicenseType.DOWNLOADING, user, codecast)
 

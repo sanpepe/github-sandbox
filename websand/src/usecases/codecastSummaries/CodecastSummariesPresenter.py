@@ -12,20 +12,6 @@ class CodecastSummariesPresenter(CodecastSummariesOutputBoundary):
     def __init__(self):
         self.viewModel = None
 
-    # @staticmethod
-    # def formatCodecast(loggedInUser, codecast):
-    #     cc = CodecastSummariesResponseModel()
-    #     CodecastSummariesPresenter.formatSummaryFields(loggedInUser, codecast, cc)
-    #     return cc
-
-    # @staticmethod
-    # def formatSummaryFields(loggedInUser, codecast, details):
-    #     details.title = codecast.getTitle()
-    #     details.publicationDate = codecast.getPublicationDate().strftime(CodecastSummariesPresenter.dateFormat)
-    #     details.isViewable = CodecastSummariesPresenter.isLicensedFor(licenseType=License.LicenseType.VIEWING, user=loggedInUser, codecast=codecast)
-    #     details.isDownloadable = CodecastSummariesPresenter.isLicensedFor(licenseType=License.LicenseType.DOWNLOADING, user=loggedInUser, codecast=codecast)
-    #     details.permalink = codecast.getPermalink()
-
     @staticmethod
     def isLicensedFor(licenseType, user, codecast):
         licenses = Context.licenseGateway.findLicensesForUserAndCodecast(user=user, codecast=codecast)
@@ -34,7 +20,6 @@ class CodecastSummariesPresenter(CodecastSummariesOutputBoundary):
                 return True
         return False
 
-
     def makeViewable(self, codecastSummary):
         summary = CodecastSummariesViewModel.ViewableCodecastSummary()
         summary.title = codecastSummary.title
@@ -42,6 +27,8 @@ class CodecastSummariesPresenter(CodecastSummariesOutputBoundary):
         summary.publicationDate = codecastSummary.publicationDate.strftime(CodecastSummariesPresenter.dateFormat)
         summary.isDownloadable = codecastSummary.isDownloadable
         summary.isViewable = codecastSummary.isViewable
+        summary.duration = str(codecastSummary.duration)
+        summary.author = str(codecastSummary.author).capitalize()
 
         return summary
 

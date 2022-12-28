@@ -1,11 +1,10 @@
-
 from websand.src.Context import Context
 from websand.src.http.Controller import Controller
 
 
-class CodecastSummariesController(Controller):
+class CodecastDetailsController(Controller):
     def __init__(self, usecase, presenter, view):
-        super(CodecastSummariesController, self).__init__()
+        super(CodecastDetailsController, self).__init__()
         self.usecase = usecase
         self.presenter = presenter
         self.view = view
@@ -18,4 +17,3 @@ class CodecastSummariesController(Controller):
         html_ret = "HTTP/1.1 200 OK\nContent-Length: {}\nContent-Type: text/html\n\n".format(len(ret)) + ret
 
         return html_ret
-

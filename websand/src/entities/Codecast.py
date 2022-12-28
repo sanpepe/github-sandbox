@@ -8,6 +8,8 @@ class Codecast(Entity):
         self.title = None
         self.permalink = None
         self.publicationDate = datetime.datetime.now()
+        self. duration = None
+        self.author = None
 
     def setTitle(self, title):
         self.title = title
@@ -26,3 +28,15 @@ class Codecast(Entity):
 
     def getPermalink(self):
         return self.permalink
+
+    def setDuration(self, duration):
+        self.duration = duration
+
+    def getDuration(self):
+        return self.duration
+
+    def setAuthor(self, author):
+        self.author = author
+
+    def getAuthor(self):
+        return self.author

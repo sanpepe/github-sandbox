@@ -18,8 +18,8 @@ class CodecastSummariesViewImpl(CodecastSummariesView):
 
             # Staged
             codecastTemplate.replace("thumbnail", "https://via.placeholder.com/400x200.png?text=Codecast")
-            codecastTemplate.replace("author", "Uncle Bob")
-            codecastTemplate.replace("duration", "58 min.")
+            codecastTemplate.replace("author", viewableCodecastSummary.author)
+            codecastTemplate.replace("duration", "{} min.".format(viewableCodecastSummary.duration))
             codecastTemplate.replace("contentActions", "Buying Options go here.")
 
             codecastlines += codecastTemplate.getContent() + "<br>"

@@ -10,6 +10,8 @@ class CodecastSummariesViewModel:
             self.title = None
             self.publicationDate = ""
             self.permalink = None
+            self.duration = ""
+            self.author = ""
 
     def addModel(self, viewableCodecastSummary):
         CodecastSummariesViewModel.viewableCodecastSummaries.append(viewableCodecastSummary)

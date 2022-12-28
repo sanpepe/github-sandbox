@@ -5,3 +5,5 @@ class CodecastSummary:
         self.title = None
         self.publicationDate = None
         self.permalink = None
+        self.duration = None
+        self.author = None

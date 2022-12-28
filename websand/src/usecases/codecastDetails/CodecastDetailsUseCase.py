@@ -5,9 +5,8 @@ from websand.src.entities.License import License
 
 class CodecastDetailsUseCase:
 
-    def requestCodecastDetails(self, loggedInUser, permalink):
+    def requestCodecastDetails(self, permalink):
         pcd = PresentableCodecastDetails()
-
         codecast = Context.codecastGateway.findCodecastByPermalink(permalink)
 
         if codecast is None:
