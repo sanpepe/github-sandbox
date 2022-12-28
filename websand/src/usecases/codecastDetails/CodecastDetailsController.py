@@ -11,7 +11,8 @@ class CodecastDetailsController(Controller):
 
     def handle(self, parsedRequest):
         loggedInUser = Context.gateKeeper.getLoggedInUser()
-        self.usecase.summarizeCodecasts(loggedInUser, self.presenter)
+        permalink = parsedRequest
+        self.usecase.requestCodecastDetails(loggedInUser, permalink, self.presenter)
         ret = self.view.generateView(self.presenter.getViewModel())
 
         html_ret = "HTTP/1.1 200 OK\nContent-Length: {}\nContent-Type: text/html\n\n".format(len(ret)) + ret

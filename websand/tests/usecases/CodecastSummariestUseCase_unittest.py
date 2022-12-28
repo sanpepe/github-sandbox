@@ -27,7 +27,7 @@ class CodecastSummariesUseCaseUnitTest(unittest.TestCase):
         self.presenterSpy = CodecastSummariesOutputBoundarySpy()
 
     def test_usecaseWiring(self):
-        self.usecase.summarizeCodecasts(self.user, self.presenterSpy )
+        self.usecase.summarizeCodecasts(self.user, self.presenterSpy)
         self.assertIsNotNone(self.presenterSpy.responseModel)
 
     def test_userWithoutViewLicense_cannotViewCodecast(self):
